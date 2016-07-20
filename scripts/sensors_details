@@ -1,0 +1,3 @@
+#!/bin/bash
+/usr/local/bin/sensors 2>&1
+exit 0

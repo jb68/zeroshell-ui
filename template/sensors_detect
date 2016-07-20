@@ -1,0 +1,21 @@
+<html>
+<head><link rel='stylesheet' type='text/css' href='/default.css'>
+<title>Sensors Detect</title>
+<script>
+function loaded() {
+    X=document.data;
+}
+</script>
+</head>
+<body onload="loaded()" style="color:#606060">
+<form name=data method=post action="kerbynet">
+<input type=hidden name=Action value="Render"><input type=hidden name=STk value=<xvar STk>>
+<input type=hidden name=Object value="sensors_details">
+<table width=100%><tr><td><font class=Bigger1 color=#3030f0><b>Output from sensor-detect</b></font></td><td align=right><input type=submit value="Run Sensors">&nbsp;&nbsp;<input type=button value=Close onclick="window.close()"></td></tr></table>
+<hr>
+<pre>
+<xvar +sensors_detect>
+</pre>
+</form>
+</body>
+</html>
