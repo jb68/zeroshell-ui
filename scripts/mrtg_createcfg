@@ -33,7 +33,6 @@ WorkDir: /var/register/system/mrtg/html
 RunAsDaemon: Yes
 AbsMax[_]: 12500000000
 
-PageTop[System]: <br><br>
 Target[System]: \`gphdata System\`
 Title[System]: System Load
 PNGTitle[System]: System Load
@@ -44,8 +43,16 @@ Legend1[System]: Average System Load x 100 (Percentage per CPU)
 LegendI[System]:  Load x 100 (CPU)
 Options[System]: growright,noinfo,noo,gauge,withzeroes,noborder,nobanner
 
+Target[Thermal]: \`$SCRIPTS/mrtgtarget_temp\`
+Title[Thermal]: CPU Temperature
+PNGTitle[Thermal]: CPU Temperature
+MaxBytes[Thermal]: 120
+YLegend[Thermal]: Degrees
+ShortLegend[Thermal]: &degC;
+Legend1[Thermal]: Average Temperature in &degC;
+LegendI[Thermal]:  Temperature in &degC;
+Options[Thermal]: growright,expscale,noinfo,noo,gauge,withzeroes,noborder,nobanner,nopercent
 
-PageTop[Connections]: <br><br>
 Target[Connections]: \`gphdata Connections\`
 Title[Connections]: Connection Tracking
 PNGTitle[Connections]: Number of Active Connections
@@ -56,7 +63,6 @@ Legend1[Connections]: Number of active connections
 LegendI[Connections]:  Active Connections
 Options[Connections]: growright,noinfo,noo,gauge,withzeroes,noborder,nobanner
 
-PageTop[CP]: <br><br>
 Target[CP]: \`gphdata CP\`
 Title[CP]: Captive Portal
 PNGTitle[CP]: Number of Connected Users
@@ -67,7 +73,6 @@ Legend1[CP]: Number of Connected Users
 LegendI[CP]:  Users
 Options[CP]: growright,noinfo,noo,gauge,withzeroes,noborder,nobanner
 
-PageTop[Memory]: <br>
 Target[Memory]: \`gphdata Memory\`
 Title[Memory]: Memory
 PNGTitle[Memory]: Memory
@@ -96,7 +101,6 @@ for I in $INTERFACES ; do
   #  fi
   #fi
   if [ "$CREATE" = yes ] ; then
-    echo "PageTop[$I]: <br>" >>$FILE
     echo "Target[$I]: \`gphdata Interface $I\`" >>$FILE
     echo "Title[$I]: $I" >>$FILE
     echo "PNGTitle[$I]: $I" >>$FILE
@@ -106,7 +110,6 @@ for I in $INTERFACES ; do
       if cd $CONFIG/$I/VLAN 2>  /dev/null ; then
         VLANS=`ls`
         for VLAN in $VLANS ; do
-           echo "PageTop[$I.$VLAN]: <br>" >>$FILE
            echo "Target[$I.$VLAN]: \`gphdata Interface $I.$VLAN\`" >>$FILE
            echo "Title[$I.$VLAN]: $I VLAN $VLAN" >>$FILE
            echo "PNGTitle[$I.$VLAN]: $I VLAN $VLAN" >>$FILE

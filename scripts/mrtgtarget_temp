@@ -1,0 +1,8 @@
+#!/bin/bash
+. /etc/kerbynet.conf
+TEMPERATURE=$(/usr/local/bin/sensors 2>/dev/null | grep temp1|cut -d: -f2)
+TEMPERATURE=${TEMPERATURE:=0}
+echo $TEMPERATURE
+echo 0
+echo 100
+echo NA 

@@ -2,7 +2,7 @@
 . /etc/kerbynet.conf
 INTERFACE="$1"
 TYPE="$2"
-if [ "$TYPE" = System -o "$TYPE" = Connections -o "$TYPE" = CP -o "$TYPE" = Memory ] ; then
+if [ "$TYPE" = System -o "$TYPE" = Connections -o "$TYPE" = CP -o "$TYPE" = Memory -o "$TYPE" = Thermal ] ; then
   echo "</select>"
   exit
 fi
