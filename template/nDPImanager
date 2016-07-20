@@ -1,0 +1,116 @@
+<html>
+<head><link rel='stylesheet' type='text/css' href='/default.css'>
+<title>nDPI Manager</title>
+<script>
+var ALL=[<xvar !nDPI_available>];
+function Filter() {
+   available=document.data.Available;
+   FS=document.data.FS.value;
+   available.options.length=0;
+   for (I=0 ; I < ALL.length ; I++) {
+      proto=ALL[I];
+      if (proto.indexOf(FS)>=0 && !is_selected(proto)) {
+        available.options[available.options.length]=new Option(proto,proto,false,false); 
+      }     
+   }
+}
+function LoadSelected() {
+   Selected=document.data.Selected;
+   Selected.options.length=0;
+   var SPLIT=document.data.SelectedList.value.split(" ");
+   for (I=0 ; I < SPLIT.length ; I++) {
+      
+      proto=SPLIT[I];
+      if (proto!="") { 
+        Selected.options[Selected.options.length]=new Option(proto,proto,false,false); 
+      }
+   }
+}
+function Add() {
+   Selected=document.data.Selected;
+   available=document.data.Available;
+   if (available.selectedIndex<0) {
+      alert("You have to select the protocol to add");
+   } else {
+      proto=available.options[available.selectedIndex].value;
+      Selected.options[Selected.options.length]=new Option(proto,proto,false,false);
+      available.options[available.selectedIndex]=null;
+      Filter();
+   }
+}
+function Remove() {
+   Selected=document.data.Selected;
+   if (Selected.selectedIndex<0) {
+      alert("You have to select the protocol to remove");
+   } else {
+      proto=Selected.options[Selected.selectedIndex].value;
+      proto=Selected.options[Selected.selectedIndex].text;
+      available=document.data.Available;
+      available.options[available.options.length]=new Option(proto,proto,false,false);
+      Selected.options[Selected.selectedIndex]=null;
+      for (I=available.options.length-1; I>0 && available.options[I].text < available.options[I-1].text ; I--) {
+         var text=available.options[I].text;
+         var value=available.options[I].value;
+	 available.options[I].value=available.options[I-1].value;
+         available.options[I].text=available.options[I-1].text;
+         available.options[I-1].text=text;
+         available.options[I-1].value=value;
+      }
+      available.selectedIndex=I;
+      Filter();
+   }
+}
+function is_selected(proto) {
+   Selected=document.data.Selected;
+   for (P=0; P<Selected.options.length ; P++) {
+         if (Selected.options[P].value==proto) {
+            return true;
+         }
+   }
+   return false;
+}
+function submitdata() {
+   Selected=document.data.Selected;
+   document.data.SelectedList.value="";
+   for (i=0; i < Selected.options.length; i++) {
+     document.data.SelectedList.value+=" "+Selected.options[i].value;
+   }
+   if (document.data.SelectedList.value.substr(0,1)==" ") document.data.SelectedList.value=document.data.SelectedList.value.substr(1);
+   var WO=window.opener;
+   if (WO!=null) {
+      if (!WO.closed) {
+        WO.document.data.nDPI.value=document.data.SelectedList.value;
+      }
+   }
+   close();
+}
+function loaded() {
+  LoadSelected();
+  Filter();
+
+}
+
+</script>
+</head>
+<body onload="loaded()">
+<form name=data method=post action="kerbynet" onsubmit="submitdata()">
+<input type=hidden name=Section value="<xvar Section>">
+<input type=hidden name=Action value="nDPIConfirm"><input type=hidden name=STk value=<xvar STk>>
+<input type=hidden name=SelectedList value="<xvar _nDPI>">
+
+<table width=100%><tr><td><font class=Bigger2 color=#3030f0><b>nDPI MANAGER</b></font></td><td align=right><input type=submit  value="Confirm">&nbsp;<input type=button value=Close onclick="window.close()"></td></tr></table>
+<hr>
+<br>
+<table width=100% cellspacing=0 cellpadding=0><tr><td width=1% nowrap><span style="background-color: #6666ff"><font color=#FFFFFF>&nbsp;&nbsp;Available Protocols&nbsp;&nbsp;</font></span></td><td>&nbsp;&nbsp;&nbsp;&nbsp;<input type=button value="+" onclick="Add()" style="font-size: 10;"></td><td nowrap align=right>Filter&nbsp;&nbsp;<input type=text name=FS size=25 onkeyup="Filter()"></td></tr></table>
+<select name=Available size=10 style="width: 100%" ondblclick="Add()">
+</select>
+</td>
+<br><br>
+<td nowrap>
+<table width=100% cellspacing=0 cellpadding=0><tr><td width=1% nowrap><span style="background-color: #6666ff"><font color=#FFFFFF>&nbsp;&nbsp;Selected Protocols&nbsp;&nbsp;</font></span></td><td>&nbsp;&nbsp;&nbsp;&nbsp;<input type=button value="-" onclick="Remove()" style="font-size: 10;"></td></tr></table>
+<select name=Selected size=10 style="width: 100%" ondblclick="Remove()">
+</select>
+</td></tr></table>
+</form>
+</body>
+</html>
