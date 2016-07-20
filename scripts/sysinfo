@@ -7,7 +7,7 @@ NCPU=`$SCRIPTS/cpus`
 MEMORY=`grep "MemTotal" /proc/meminfo |cut -d: -f2`
 MFREE=$($SCRIPTS/../api/MEMINFO |awk '{print $5}' | sed -r 's/.(.*)../\1/')
 MUSED=$((100-MFREE))
-UPTIME=`awk '{Days=$1/86400; Sec=$1%86400; Hours=Sec/3600; Sec=Sec%3600 ; Minutes=Sec/60; printf "%d days, %d:%d",Days,Hours,Minutes }' < /proc/uptime`
+UPTIME=`awk '{Days=$1/86400; Sec=$1%86400; Hours=Sec/3600; Sec=Sec%3600 ; Minutes=Sec/60; printf "%d days, %d:%02d",Days,Hours,Minutes }' < /proc/uptime`
 TEMPERATURE=$(sensors| grep temp1|cut -d: -f2)
 TEMPERATURE=${TEMPERATURE:=NA}
 
