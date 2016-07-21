@@ -3,7 +3,7 @@
 ENABLED="$1"
 PROVIDER="$2"
 HOST="$3"
-DOMAIN="$4"
+UPDATEURL="$4"
 USERNAME="$5"
 PW="$6"
 if [ "$ENABLED" != yes ] ; then
@@ -17,23 +17,21 @@ else
 fi
 echo "$ENABLED" > $REGISTER/system/ddnsclient/Enabled
 echo "$PROVIDER" > $REGISTER/system/ddnsclient/Provider
+echo "$HOST" > $REGISTER/system/ddnsclient/Host
+
 if [ "$PROVIDER" = OpenDNS ] ; then
   HOST=""
-  DOMAIN="opendns"
   CHECKIP="http://checkip.dyndns.org:8245/"
 elif [ "$PROVIDER" = DynDNS ] ; then
   CHECKIP="http://checkip.dyndns.org:8245/"
-else
+elif [ "$PROVIDER" = No-IP ] ; then
   CHECKIP="http://ip1.dynupdate.no-ip.com:8245/"
+else
+  CHECKIP="http://checkip.dyndns.org:8245/"
 fi
+echo "$UPDATEURL" > $REGISTER/system/ddnsclient/UpdateURL
 echo "$CHECKIP" > $REGISTER/system/ddnsclient/CheckIP
-echo "$HOST.$DOMAIN" > $REGISTER/system/ddnsclient/Host
-echo "$HOST.$DOMAIN" > $REGISTER/system/ddnsclient/Host.$PROVIDER
 echo "$USERNAME" > $REGISTER/system/ddnsclient/Username
-echo "$USERNAME" > $REGISTER/system/ddnsclient/Username.$PROVIDER
 echo "$PW" > $REGISTER/system/ddnsclient/Password
-echo "$PW" > $REGISTER/system/ddnsclient/Password.$PROVIDER
 kill `ps -ef |grep "sleep 304" | grep -v grep |awk '{print $2}'`
 exit 0
-
-
