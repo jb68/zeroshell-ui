@@ -324,7 +324,7 @@ apache ALL=     NOPASSWD:       <xvar ^SCRIPTS>/alert_spool
 apache ALL=     NOPASSWD:       <xvar ^SCRIPTS>/alerts_testscript
 apache ALL=     NOPASSWD:       <xvar ^SCRIPTS>/alert
 apache ALL=     NOPASSWD:       <xvar ^SCRIPTS>/bitrate
-
+apache ALL=     NOPASSWD:       /usr/local/sbin/sensors-detect
 apache ALL=     NOPASSWD:       /usr/local/bin/ntpdate
 
 
