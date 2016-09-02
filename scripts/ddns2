@@ -67,7 +67,7 @@ if [ "`cat $REGISTER/system/ddnsclient/Enabled 2>/dev/null`" == yes ] ; then
         OPT="--http-user=$USERNAME --http-passwd=$PASSWORD"
         
         # Replace placeholders in UpdateURL
-        WGET="${UPTDATEURL/__HOSTNAME__/$HOSTNAME}"
+        WGET="${UPTDATEURL/__HOSTNAME__/$HOST}"
         WGET="${WGET/__USERNAME__/$USERNAME}"
         WGET="${WGET/__PASSWORD__/$PASSWORD}"
 
