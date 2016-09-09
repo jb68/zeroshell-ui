@@ -12,6 +12,8 @@ if [ "$HTTP" != "`cat $REGISTER/system/httpd/HTTP 2>/dev/null`" ] ; then
     echo "TCP port $HTTP is already used by another service" >&2
     exit 3
   fi
+fi
+if [ "$HTTPS" != "`cat $REGISTER/system/httpd/HTTPS 2>/dev/null`" ] ; then
   if ! netstat -ntl |grep -w -q "$HTTPS" ; then
     echo "$HTTPS" > $REGISTER/system/httpd/NEWHTTPS
   else
