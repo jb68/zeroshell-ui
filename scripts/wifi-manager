@@ -75,15 +75,11 @@ function setchannel {
   echo $STANDARD > $REGISTER/system/net/WiFi/DEVS/$XDEV/Standard
   echo
   echo
-  if [ "$STANDARD" == 0 ] ; then
-    CHFILTER=""
-  else
-    if [ "$STANDARD" == 1 ] ; then
-      CHFILTER=5.
-    else
-      CHFILTER=2.4
-    fi
-  fi
+  case $STANDARD in
+     0) CHFILTER="";;
+     1|5) CHFILTER="5.";;
+     *) CHFILTER="2.4";;
+  esac
   iwlist $XDEV channel | grep -v available | grep " $CHFILTER"
   CHANNELS=`iwlist $XDEV channel | grep -v available | grep -v Current | grep Channel | grep " $CHFILTER" |awk '{ if (substr($2,1,1)=="0") print substr($2,2,1); if (substr($2,1,1)!="0") print $2;}'`
   CHCURRENT=`cat $REGISTER/system/net/WiFi/DEVS/$XDEV/CHANNEL 2>/dev/null`
