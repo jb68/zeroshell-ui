@@ -19,5 +19,5 @@ while [ -r "$CERT" ] ; do
   CERT="/etc/ssl/certs/trusted_CAs/$ISSUER_HASH.0"
   [ "$CERT" = "$OLD" ] && CERT="/etc/ssl/certs/trusted_CAs/LastIssuerCA"
 done
-mv "$OFFLINE" "$REGISTER/system/cp/Auth/FreeCRL.iptables -w"
+mv "$OFFLINE" "$REGISTER/system/cp/Auth/FreeCRL.iptables"
 $SCRIPTS/cp_create_CRL_ipt

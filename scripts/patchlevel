@@ -1,6 +1,6 @@
 #!/bin/sh
 . /etc/kerbynet.conf
-PATCHLEVEL=0
+PATCHLEVEL=1
 if [ -z "$PATCHLEVEL" ] ; then
   echo 0
 else

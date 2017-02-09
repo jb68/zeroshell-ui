@@ -54,14 +54,15 @@ if cd "$CONFIG" 2> /dev/null ; then
         CRYPTO=`cat TUNNEL/Crypto`
         PARAMETERS="`cat TUNNEL/Parameters`"
         if ! [ -z "$REMOTECN" ] ; then
-          REMOTECN="--tls-remote `echo $REMOTECN | sed -r 's/[# {}\(\)\^?!*[]/_/g'`"
+          #REMOTECN="--tls-remote `echo $REMOTECN | sed -r 's/[# {}\(\)\^?!*[]/_/g'`"
+          REMOTECN="--verify-x509-name \"$REMOTECN\" name"
         fi 
         if [ "$TLSROLE" == Server ] ; then
            TLSROLE=server
-           RESTART=7
+           RESTART=37
 	else
            TLSROLE=client 
-           RESTART=11
+           RESTART=17
         fi 
         if [ "$PROTO" == TCP ] ; then
            PROTO=tcp-$TLSROLE
@@ -102,7 +103,7 @@ if cd "$CONFIG" 2> /dev/null ; then
           exit 25
         fi
         $SCRIPTS/nb_vpn
-        if bash -c "openvpn --dev $INTERFACE $LOCALIP $REMOTEIP --port $PORT --proto $PROTO $AUTHSTRING --dev-type tap --float --keepalive 1 11 --script-security 3 --management 127.0.0.1 $MGT --daemon ${INTERFACE}_L2L $COMPRESSION $CRYPTO $PARAMETERS --down '$SCRIPTS/vpn_mii'  --mute-replay-warnings" ; then
+        if bash -c "openvpn --dev $INTERFACE $LOCALIP $REMOTEIP --port $PORT --proto $PROTO $AUTHSTRING --dev-type tap --float --keepalive 1 $RESTART --script-security 3 --management 127.0.0.1 $MGT --daemon ${INTERFACE}_L2L $COMPRESSION $CRYPTO $PARAMETERS --down '$SCRIPTS/vpn_mii'  --mute-replay-warnings" ; then
            SEM="/tmp/VPN_MII_$INTERFACE"
            rm -f $SEM
            $SCRIPTS/vpn_mii $INTERFACE
