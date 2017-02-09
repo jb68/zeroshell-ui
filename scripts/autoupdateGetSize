@@ -8,7 +8,7 @@ if [ "$TYPE" = Release ] ; then
   echo
 else
   SIZE=`$SCRIPTS/autoupdateGetField "$ID" SIZE`
-  FREEM=`df |grep /Database |awk '{printf "%d",$4/1024}'`
+  FREEM=`df |grep -w /Database$ |awk '{printf "%d",$4/1024}'`
   if [ $SIZE -le $FREEM ] ; then
     COLOR="#30C030"
   else
