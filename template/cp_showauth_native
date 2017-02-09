@@ -187,7 +187,7 @@ function AAIauth() {
 <table width=100%><tr><td align=right><input type=button name=AAILogin value="<xvar /system/cp/Auth/Shibboleth/Button>" onclick="AAIauth()">&nbsp;<input type=button name=x509login value="Cert" onclick="x509auth()"><script>if ("<xvar /system/cp/Auth/X509/Enabled>" != "yes" || "<xvar /system/cp/Auth/NoSSL>" == "yes") { document.data.x509login.disabled=true; };if ("<xvar /system/cp/Auth/Shibboleth/Enabled>" != "yes") { document.data.AAILogin.disabled=true; }</script></td></tr></table>
 <br><br>
   <table width=100% cellspacing=2 cellpadding=2>
-  <tr><td width=35% align=right><xvar +cp_msg USERNAME>&nbsp;&nbsp;</td><td><input type=text name=U size=35 onKeyPress="return CheckEnterKey(this,event)"></td></tr>
+  <tr><td width=35% align=right><xvar +cp_msg USERNAME>&nbsp;&nbsp;</td><td><input type=text name=U autocorrect="off" autocapitalize="none" size=35 onKeyPress="return CheckEnterKey(this,event)"></td></tr>
   <tr><td align=right><xvar +cp_msg PASSWORD>&nbsp;&nbsp;</td><td><input type=password name=P size=35 onKeyPress="return CheckEnterKey(this,event)"></td></tr>
   <tr><td align=right><xvar +cp_msg DOMAIN>&nbsp;&nbsp;</td><td><select name=Realm><xvar +cpListDomainsOptions></select></td></tr>
   <tr><td align=right></td><td><br><input type=button value="<xvar +cp_msg NetworkAccess>" onclick="Authenticate()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<script>if ("<xvar /system/cp/Auth/Custom/GeneralInfoVisible>"=="yes") {document.write("<a href='javascript:ShowInfo()'>Info</a>");}</script></td></tr>
