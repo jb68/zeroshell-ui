@@ -67,7 +67,7 @@ function x509CRL() {
 <td>
 <table border=0>
 
-<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Username&nbsp;&nbsp;</td><td><input type=text name=User size=30 onKeyPress="return CheckEnterKey(this,event)" tabindex=1></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Username&nbsp;&nbsp;</td><td><input type=text name=User autocorrect="off" autocapitalize="none" size=30 onKeyPress="return CheckEnterKey(this,event)" tabindex=1></td></tr>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;Password&nbsp;&nbsp;</td><td><input type=password name=PW size=30 tabindex=2></td></tr>
 <tr><td></td><td align=center><br><input type=submit value="   Login   "> <input type=button value="Password" onclick="alert('Login required to change password.')"></td></tr>
 </table>

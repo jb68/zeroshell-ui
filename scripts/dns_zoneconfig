@@ -87,12 +87,12 @@ for ZONE in `ls` ; do
     echo "  zone \"$ZONE\" {" >> /tmp/named.local-view
     echo "    type slave;" >> /tmp/named.local-view
     echo "    masters { $MASTER; };" >> /tmp/named.local-view
-    echo "    file \"slaves/$ZONE.zone\";" >> /tmp/named.local-view
+    echo "    file \"slaves/$ZONE-local.zone\";" >> /tmp/named.local-view
     echo "  };" >> /tmp/named.local-view
     echo "  zone \"$ZONE\" {" >> /tmp/named.external-view
     echo "    type slave;" >> /tmp/named.external-view
     echo "    masters { $MASTER; };" >> /tmp/named.external-view
-    echo "    file \"slaves/$ZONE.zone\";" >> /tmp/named.external-view
+    echo "    file \"slaves/$ZONE-ext.zone\";" >> /tmp/named.external-view
     echo "    allow-query { any; };" >> /tmp/named.external-view
     echo "  };" >> /tmp/named.external-view
   fi
