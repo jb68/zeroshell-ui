@@ -14,10 +14,15 @@ if [ "`cat $REGISTER/system/ddnsclient/Enabled 2>/dev/null`" == yes ] ; then
   STATUS="$REGISTER/system/ddnsclient/Status"
   UPTDATEURL="`cat $REGISTER/system/ddnsclient/UpdateURL`"
   CHECKIP_URL="`cat $REGISTER/system/ddnsclient/CheckIP`"
-  IP=`wget --timeout=15 -t 1 -O - -o /dev/null $CHECKIP_URL  |egrep  '[0123456789]{1,3}\.[0123456789]{1,3}\.[0123456789]{1,3}\.[0123456789]{1,3}'|head -1|sed -r 's/.* ([0123456789]{1,3}\.[0123456789]{1,3}\.[0123456789]{1,3}\.[0123456789]{1,3}).*/\1/'`
-  if ! echo $IP | egrep -q '^[0123456789]{1,3}\.[0123456789]{1,3}\.[0123456789]{1,3}\.[0123456789]{1,3}$'; then
+  if [ -f $REGISTER/system/ddnsclient/DnsServer ] ; then
+      DnsServer="`cat $REGISTER/system/ddnsclient/DnsServer`"
+  fi
+  IP=`wget --timeout=15 -t 1 -O - -o /dev/null $CHECKIP_URL  \
+     |egrep  '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' \
+     |head -1|sed -r 's/.* ([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}).*/\1/'`
+  if ! echo $IP | egrep -q '^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$'; then
     logger -t DDNS "ERROR: IP checker not available ($CHECKIP_URL)"
-    SKIP=yes 
+    SKIP=yes
   fi
 
   PROVIDER="`cat $REGISTER/system/ddnsclient/Provider 2>/dev/null`"
@@ -39,7 +44,9 @@ if [ "`cat $REGISTER/system/ddnsclient/Enabled 2>/dev/null`" == yes ] ; then
   if [ "$PROVIDER" = ".OpenDNS" ] ; then
      RESOLUTION=1.1.1.1
   else
-     RESOLUTION=`host $HOST 2>/dev/null |egrep '[0123456789]{1,3}\.[0123456789]{1,3}\.[0123456789]{1,3}\.[0123456789]{1,3}'|head -1|awk '{print $4}'`
+     RESOLUTION=`host $HOST $DnsServer 2>/dev/null \
+                |egrep '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' \
+                |tail -1|awk '{print $4}'`
   fi
   if [ "$IP" != "$RESOLUTION" ] ; then
     CHANGED=yes
@@ -47,17 +54,17 @@ if [ "`cat $REGISTER/system/ddnsclient/Enabled 2>/dev/null`" == yes ] ; then
   else
      echo "<font color=#20e020>UPDATED</font>" > $STATUS
   fi
-  if [ "$SKIP" != yes ] ; then
-    if [ "$CHANGED" == yes -o "$EXPIRED" == yes -o "$PROVIDER" = "OpenDNS" ] ; then
-      if [ "$CHANGED" != yes -a "$EXPIRED" == yes ] ; then
+  if [ "$SKIP" != "yes" ] ; then
+    if [ "$CHANGED" == "yes" -o "$EXPIRED" == "yes" -o "$PROVIDER" = "OpenDNS" ] ; then
+      if [ "$CHANGED" != "yes" -a "$EXPIRED" == "yes" ] ; then
          logger -t DDNS "WARNING: Update is needed to prevent $HOST expiration"
       fi
-      if [ "$IP" != "$RESOLUTION" -o "$EXPIRED" == yes ] ; then
+      if [ "$IP" != "$RESOLUTION" -o "$EXPIRED" == "yes" ] ; then
         if [ "$PROVIDER" != "OpenDNS" ] ; then
           logger -t DDNS "WAN IP=$IP $HOST=$RESOLUTION (Update is needed)"
         else
           logger -t DDNS "WAN IP=$IP"
-        fi       
+        fi
         ERROR="/tmp/dyndns.err"
         RESULT="/tmp/dyndns.out"
         USERNAME="`$SCRIPTS/getkey /system/ddnsclient/Username`"
@@ -65,7 +72,7 @@ if [ "`cat $REGISTER/system/ddnsclient/Enabled 2>/dev/null`" == yes ] ; then
         logger -t DDNS "Dynamic DNS updating $HOST ($USERNAME)"
 
         OPT="--http-user=$USERNAME --http-passwd=$PASSWORD"
-        
+
         # Replace placeholders in UpdateURL
         WGET="${UPTDATEURL/__HOSTNAME__/$HOST}"
         WGET="${WGET/__USERNAME__/$USERNAME}"
@@ -78,30 +85,32 @@ if [ "`cat $REGISTER/system/ddnsclient/Enabled 2>/dev/null`" == yes ] ; then
             WGETERROR="Authorization failed. BAD Username/Password"
           else
             WGETERROR="Connectivity ERROR"
-	  fi
-        else 
+	      fi
+        else
           WGETERROR=""
-	fi
+	    fi
         if [ -z "$WGETERROR" ] ; then
           logger -t DDNS "==> `cat $RESULT`"
           if grep -q "\!yours\|notfqdn\|abuse\|nohost\|badagent\|badauth\|badsys\|dnserr\|numhost\|911\|\!donator" $RESULT  ; then
-	    echo "<font color=#e03030>Disabled for fatal ERROR. Please check the logs</font>" > $STATUS
+	        echo "<font color=#e03030>Disabled for fatal ERROR. Please check the logs</font>" > $STATUS
             logger -t DDNS "==> A fatal error occurs and the DDNS client is now disabled. Please solve the problem and enable the Dynamic DNS Client."
             echo no > $REGISTER/system/ddnsclient/Enabled
           else
-	    echo "<font color=#20e020>UPDATED</font>" > $STATUS
+	        echo "<font color=#20e020>UPDATED</font>" > $STATUS
             echo $HOST > $OLDHOST
             echo $IP > $OLDIP
             echo $TIMESTAMP > $LASTUPDATE
           fi
         else
-	  echo "<font color=#e03030>$WGETERROR</font>" > $STATUS
+	      echo "<font color=#e03030>$WGETERROR</font>" > $STATUS
           logger -t DDNS "ERROR:"
-          grep -v " => " "$ERROR" | logger -t DDNS 
+          grep -v " => " "$ERROR" | logger -t DDNS
         fi
       fi
+    else
+      logger -t DDNS "WAN IP=$IP $HOST=$RESOLUTION (no update)"
     fi
   fi
 fi
-sleep 304
+sleep 30
 done
