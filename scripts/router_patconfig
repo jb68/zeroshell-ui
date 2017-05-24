@@ -15,7 +15,7 @@ if [ "$INTERFACE" != ALL ] ; then
   INT="-i $INTERFACE"
 fi
 if [ "$VIRTUALIP" != ANY ] ; then
-  VIP="-d $VIRTUALIP"
+  VIP="-s $VIRTUALIP"
 fi
 if echo $REMOTEIP |grep -q "\-" ; then
   DST="-miprange --dst-range $REMOTEIP"
