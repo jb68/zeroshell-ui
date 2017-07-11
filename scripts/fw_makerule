@@ -219,8 +219,9 @@ if [ "$ENABLED" == yes -o "$OPT" == test ] ; then
     if [ "$NOTNDPI" == checked ] ; then
       IPT="$IPT !"
     fi
-    NDPI=$(echo $NDPI | tr " " ",")    
-    IPT="$IPT --proto $NDPI"
+    for XNDPI in $NDPI ; do
+      IPT="$IPT --$XNDPI"
+    done
   fi
 
 

@@ -2,15 +2,16 @@
 <head><link rel='stylesheet' type='text/css' href='/default.css'>
 <title>nDPI Manager</title>
 <script>
-var ALL=[<xvar !nDPI_available>];
+var PROTOCOL=[];
+<xvar !nDPI_available>
 function Filter() {
    available=document.data.Available;
    FS=document.data.FS.value;
    available.options.length=0;
-   for (I=0 ; I < ALL.length ; I++) {
-      proto=ALL[I];
-      if (proto.indexOf(FS)>=0 && !is_selected(proto)) {
-        available.options[available.options.length]=new Option(proto,proto,false,false); 
+   for (var proto in PROTOCOL) {
+      desc=PROTOCOL[proto];
+      if (desc.toLowerCase().indexOf(FS.toLowerCase())>=0 && !is_selected(proto)) {
+        available.options[available.options.length]=new Option(desc,proto,false,false); 
       }     
    }
 }
@@ -22,7 +23,7 @@ function LoadSelected() {
       
       proto=SPLIT[I];
       if (proto!="") { 
-        Selected.options[Selected.options.length]=new Option(proto,proto,false,false); 
+        Selected.options[Selected.options.length]=new Option(PROTOCOL[proto],proto,false,false); 
       }
    }
 }
@@ -33,7 +34,7 @@ function Add() {
       alert("You have to select the protocol to add");
    } else {
       proto=available.options[available.selectedIndex].value;
-      Selected.options[Selected.options.length]=new Option(proto,proto,false,false);
+      Selected.options[Selected.options.length]=new Option(PROTOCOL[proto],proto,false,false);
       available.options[available.selectedIndex]=null;
       Filter();
    }
