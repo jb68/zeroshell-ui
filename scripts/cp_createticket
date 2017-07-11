@@ -1,11 +1,15 @@
 #!/bin/sh
 . /etc/kerbynet.conf
 AUTHTYPE="$1"
-USER="$2"
-PW="$3"
-REALM="$4"
-IP="$5"
+USER="$(echo -e $2)"
 RENEW="$6"
+if [ -n "$RENEW" ] ; then
+  PW="$3"
+else
+  PW="$(echo -e $3)"
+fi
+REALM="$(echo $4)"
+IP="$5"
 if [ -z "$RENEW" ] ; then
   if [ "$AUTHTYPE" != X509 -a "$AUTHTYPE" != Shibboleth ] ; then
     RADIUSREALM="`echo $REALM |awk '{print tolower($0)}'`"
