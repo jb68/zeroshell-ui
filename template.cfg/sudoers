@@ -207,6 +207,7 @@ apache ALL=     NOPASSWD:       <xvar ^SCRIPTS>/usenativeshib
 apache ALL=     NOPASSWD:       <xvar ^SCRIPTS>/crontabgen
 apache ALL=     NOPASSWD:       <xvar ^SCRIPTS>/removejob
 apache ALL=     NOPASSWD:       <xvar ^SCRIPTS>/cpw
+apache ALL=     NOPASSWD:       <xvar ^SCRIPTS>/cpw-fromweb
 apache ALL=     NOPASSWD:       <xvar ^SCRIPTS>/defaultvalue
 apache ALL=     NOPASSWD:       <xvar ^SCRIPTS>/syslog_start
 apache ALL=     NOPASSWD:       <xvar ^SCRIPTS>/hwclock
@@ -324,7 +325,9 @@ apache ALL=     NOPASSWD:       <xvar ^SCRIPTS>/alert_spool
 apache ALL=     NOPASSWD:       <xvar ^SCRIPTS>/alerts_testscript
 apache ALL=     NOPASSWD:       <xvar ^SCRIPTS>/alert
 apache ALL=     NOPASSWD:       <xvar ^SCRIPTS>/bitrate
+
 apache ALL=     NOPASSWD:       /usr/local/sbin/sensors-detect
+apache ALL=     NOPASSWD:       <xvar ^SCRIPTS>/shellinabox
 apache ALL=     NOPASSWD:       /usr/local/bin/ntpdate
 
 
@@ -340,4 +343,4 @@ apache ALL=	NOPASSWD:	/sbin/reboot
 apache ALL=	NOPASSWD:	/bin/reboot
 apache ALL=	NOPASSWD:	/bin/killall
 apache ALL=	NOPASSWD:	/usr/local/sbin/iptables
-	
+

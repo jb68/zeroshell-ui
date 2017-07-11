@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
- Z e r o S h e l l - Net Services  <xvar *RELEASE>.<xvar *PATCHLEVEL>          <xvar *DATE>
+ Z E R O S H E L L - Net Services  <xvar *RELEASE>.<xvar *PATCHLEVEL>          <xvar *DATE>
 -------------------------------------------------------------------------------
   Hostname : <xvar /system/misc/hostname>
   CPU (<xvar *NCPU>)  : <xvar *CPU> <xvar *MHZ>MHz

@@ -45,7 +45,7 @@ function SiteRedirect() {
   }
 }
 function loaded() {
-  setTimeout("SiteRedirect()",60000);
+  setTimeout("SiteRedirect()",15000);
 }
 function CloseW() {
   if ("<xvar _MainFocus>"=="yes") {
